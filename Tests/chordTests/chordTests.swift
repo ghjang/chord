@@ -20,7 +20,7 @@ class chordTests: XCTestCase {
             (" C C# D D# E F F# G G# A A# B", 12),
             ("+-+-", 4),
             ("C++100--D#", 7),
-            ("Cb  Bb  100  G#", 4)
+            ("Cb  Bb  100  G#", 4),
         ]
 
         expressions.forEach{
@@ -31,8 +31,23 @@ class chordTests: XCTestCase {
         }
     }
 
+    func testFailTokenization() {
+        let expressions = [
+            ("Cb#  Bb  100  G#", 4),
+            ("Cbb  Bb  100  G#", 4),
+        ]
+
+        expressions.forEach{
+            let tokenizer = Tokenizer(text: $0.0)
+            var tokens: [Token] = []
+            tokens.append(contentsOf: tokenizer)
+            XCTAssert(tokens.count != $0.1)
+        }
+    }
+
     static var allTests = [
         ("testExample", testExample),
-        ("Tokenization Success Cases", testSuccessTokenization)
+        ("Tokenization Success Cases", testSuccessTokenization),
+        ("Tokenization Fail Cases", testFailTokenization)
     ]
 }
