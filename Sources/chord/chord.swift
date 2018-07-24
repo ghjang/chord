@@ -29,10 +29,8 @@ struct Tokenizer : Sequence, IteratorProtocol
     private var iter_: IndexingIterator<String>
     private var nextChar_: Character?
 
-    init?(text: String)
+    init(text: String)
     {
-        guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-
         self.text = text
         self.iter_ = self.text.makeIterator()
         self.getNextChar()
@@ -104,7 +102,7 @@ struct Tokenizer : Sequence, IteratorProtocol
 
         var s = String(c)
 
-        while self.nextChar_ != nil {
+        loop: while self.nextChar_ != nil {
             let nc = self.nextChar_!
             switch nc {
             case "0"..."9":
@@ -112,7 +110,7 @@ struct Tokenizer : Sequence, IteratorProtocol
                 self.getNextChar()
 
             default:
-                break
+                break loop
             }
         }
 
